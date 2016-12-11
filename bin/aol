@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/aol'
+
+include Aol
+
+def main
+  desktop_filename = ARGV.shift
+  aol_start(desktop_filename)
+end
+
+# run
+debug 'START'
+debug 'ARGV'
+debug ARGV
+main
+debug 'END'
