@@ -1,14 +1,14 @@
 require "pathname"
 
 module Aol
-  App = Struct.new(:launch_command, :wm_class)
+  App = Struct.new(:name, :launch_command, :wm_class)
 
-  APPS = {
-    chrome: App.new('google-chrome', 'google-chrome.google-chrome'),
-    firefox: App.new('firefox', 'Navigator.Firefox'),
-    terminal: App.new('gnome-terminal', 'gnome-terminal-server.Gnome-terminal'),
-    desktop: App.new('wmctrl -k on'),
-  }
+  APPS = [
+    App.new(:chrome, 'google-chrome', 'google-chrome.google-chrome'),
+    App.new(:firefox, 'firefox', 'Navigator.Firefox'),
+    App.new(:terminal,'gnome-terminal', 'gnome-terminal-server.Gnome-terminal'),
+    App.new(:desktop, 'wmctrl -k on'),
+  ]
 
   def debug(msg)
     puts "[DEBUG] #{msg}"
@@ -60,7 +60,7 @@ module Aol
 
   def find_app(desktop_filename)
     name = get_app_name(desktop_filename)
-    APPS[name.to_sym]
+    APPS.find {|item| item.name == name.to_sym}
   end
 
   def find_wmctrl_id(wm_class)
