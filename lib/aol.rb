@@ -1,14 +1,14 @@
-require "pathname"
+require "csv"
 
 module Aol
   App = Struct.new(:name, :launch_command, :wm_class)
 
-  APPS = [
-    App.new(:chrome, 'google-chrome', 'google-chrome.google-chrome'),
-    App.new(:firefox, 'firefox', 'Navigator.Firefox'),
-    App.new(:terminal,'gnome-terminal', 'gnome-terminal-server.Gnome-terminal'),
-    App.new(:desktop, 'wmctrl -k on'),
-  ]
+  APPS_CSV_PATH = ENV['HOME'] + '/.config/activate_or_launch/apps.csv'
+  APPS = []
+
+  CSV.foreach(APPS_CSV_PATH) do |row|
+    APPS << App.new(row[0], row[1], row[2])
+  end
 
   def debug(msg)
     puts "[DEBUG] #{msg}"
@@ -60,7 +60,7 @@ module Aol
 
   def find_app(desktop_filename)
     name = get_app_name(desktop_filename)
-    APPS.find {|item| item.name == name.to_sym}
+    APPS.find {|item| item.name == name}
   end
 
   def find_wmctrl_id(wm_class)
